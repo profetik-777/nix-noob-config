@@ -16,11 +16,10 @@ Other Wayland or X11-based environments
 
 The goal is to help users understand:
 
-How NixOS modules work
+How NixOS config is laid out and organized 
+The concept of "modules" and the nuance of how that gets applied
 How desktop environments are enabled and configured
 How portals and display managers interact
-How Wayland-related services connect together
-How immutable-style workflows can be approached in NixOS
 How to organize reusable configurations over time
 Areas for Exploration and Improvement
 
@@ -33,11 +32,7 @@ XDG desktop integration
 Display manager behavior
 Session startup logic
 Authentication agents
-Audio systems
-Polkit integration
-File picker behavior
-Screen sharing support
-GTK and Qt interoperability
+
 
 Part of the learning process is recognizing that desktop environments are not isolated components. They often introduce supporting services, dependencies, defaults, and assumptions that affect other parts of the system configuration.
 
@@ -47,13 +42,7 @@ Naming Conventions and Terminology
 
 This guide also attempts to explain common NixOS terminology and naming conventions to reduce confusion for newer users.
 
-Examples include:
-
-What “desktopManager” means
-The difference between a display manager and desktop environment
-What portals are and why they exist
-The meaning of XDG-related configuration
-The difference between GTK and Qt ecosystems
+Examples
 Why some services appear even when you did not explicitly install them
 How modules, packages, services, and options relate to each other
 
