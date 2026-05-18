@@ -128,7 +128,25 @@
 
 # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
+  
+   # Some programs need SUID wrappers, can be configured further or are
+  # started in user sessions.
+  # programs.mtr.enable = true;
+  # programs.gnupg.agent = {
+  #   enable = true;
+  #   enableSSHSupport = true;
+  # };
 
+
+# Enable XDG Desktop Portals.
+# Used by Flatpak and modern desktop/Wayland apps for
+# secure desktop integration features.
+xdg.portal = {
+  enable = true;
+  extraPortals = with pkgs; [
+    xdg-desktop-portal-gtk
+  ];
+};
 
 ##################################################
 ##             Networking                      ##
@@ -349,40 +367,55 @@ environment.systemPackages = with pkgs; [
 ##                 FLATPAK                     ##
 ################################################## 
   
-  # Flatpak provides an additional software layer separated
-  # from the core operating system. This can help reduce
-  # dependency conflicts and keep desktop applications more isolated.
-  #
-  # This setup enables Flatpak support and adds Flathub
-  # as a user-level software source.
-  #
-  # "User-level" means Flatpak applications are installed
-  # only for your user account rather than system-wide
-  # for every user on the machine.
-  # services.flatpak.enable = true;
-  #
-  # system.activationScripts.addFlathubUserRepo.text = ''
-  #   ${pkgs.flatpak}/bin/flatpak remote-add --user --if-not-exists flathub \
-  #     https://dl.flathub.org/repo/flathub.flatpakrepo
-  # '';
+# Flatpak provides an additional software layer separated
+# from the core operating system. This can help reduce
+# dependency conflicts and keep desktop applications more isolated.
+#
+# This setup enables Flatpak support and adds Flathub
+# as a user-level software source.
+#
+# "User-level" means Flatpak applications are installed
+# only for your user account rather than system-wide
+# for every user on the machine.
 
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
+# services.flatpak.enable = true;
 
-  # List services that you want to enable:
+# system.activationScripts.addFlathubUserRepo.text = ''
+# ${pkgs.flatpak}/bin/flatpak remote-add --user --if-not-exists flathub \
+#    https://dl.flathub.org/repo/flathub.flatpakrepo
+# '';
 
-  
-  # This value determines the NixOS release from which the default
-  # settings for stateful data, like file locations and database versions
-  # on your system were taken. It‘s perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
-  # Before changing this value read the documentation for this option
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "25.11"; # Did you read the comment?
+
+##################################################
+##         SYSTEM VERSION ORIGIN              ##
+################################################## 
+
+# Defines the original NixOS release this system was first
+# installed with. NixOS uses this value to preserve compatibility
+# for important system data and behavior across upgrades.
+#
+# This is NOT your current running version.
+#
+# In most cases, this should remain unchanged after the
+# initial installation unless you fully understand the
+# migration implications.
+#
+# Changing this incorrectly can potentially affect:
+# - Database formats
+# - File locations
+# - Service behavior
+# - System defaults
+#
+# Learn more:
+# man configuration.nix
+# https://search.nixos.org/options?show=system.stateVersion
+
+# This value determines the NixOS release from which the default
+# settings for stateful data, like file locations and database versions
+# on your system were taken. It‘s perfectly fine and recommended to leave
+# this value at the release version of the first install of this system.
+# Before changing this value read the documentation for this option
+# (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
+system.stateVersion = "25.11"; # Did you read the comment?
 
 }
