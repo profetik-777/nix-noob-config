@@ -246,13 +246,18 @@ nixpkgs.config.allowUnfree = true;
  services.flatpak.enable = true;
 
 # Add the Flathub repository.
- system.activationScripts.flathub = {
-   text = ''
-     flatpak remote-add --if-not-exists flathub \
-       https://flathub.org/repo/flathub.flatpakrepo
-   '';
- };
- 
+services.flatpak = {
+  # Enable Flatpak support.
+  enable = true;
+
+  # Add the Flathub repository.
+  remotes = [
+    {
+      name = "flathub";
+      location = "https://dl.flathub.org/repo/flathub.flatpakrepo";
+    }
+  ];
+};
 # Note: If you want to install flatpak software,
 # you can acticate flatpaks, reboot, and open the 
 # terminal and add software using the following commands
