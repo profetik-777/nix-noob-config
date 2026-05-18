@@ -1,3 +1,9 @@
+##############################################################
+##                                                          ##
+##        ANNOTATED NIXOS CONFIG GUIDE - VERSION 0.5        ##
+##                                                          ##
+##############################################################
+
 ##################################################
 ##                INTRODUCTION                 ##
 ##################################################
@@ -137,16 +143,9 @@
   #   enableSSHSupport = true;
   # };
 
-
 # Enable XDG Desktop Portals.
 # Used by Flatpak and modern desktop/Wayland apps for
 # secure desktop integration features.
-xdg.portal = {
-  enable = true;
-  extraPortals = with pkgs; [
-    xdg-desktop-portal-gtk
-  ];
-};
 
 ##################################################
 ##             Networking                      ##
@@ -280,6 +279,27 @@ nixpkgs.config.allowUnfree = true;
 
   # Enable Vim using the built-in NixOS program option.
   programs.vim.enable = true;
+  
+##################################################
+##           DESKTOP ENVIRONMENT               ##
+##################################################
+
+# Enable the LXQt desktop environment.
+# LXQt provides the graphical desktop session.
+
+services.xserver.displayManager.sddm.enable = true;
+services.xserver.desktopManager.lxqt.enable = true;
+
+# Enable XDG Desktop Portals.
+# Portals are used by Flatpak and modern desktop apps
+# for secure desktop integration features like file pickers,
+# screenshots, screen sharing, and opening links.
+#
+xdg.portal = {
+  enable = true;
+  lxqt.enable = true;
+  config.common.default = [ "lxqt" ];
+};
 
 ##################################################
 ##           SYSTEM-WIDE SOFTWARE              ##
