@@ -9,25 +9,38 @@
 ##################################################
 
 # This NixOS config file is meant to serve as both
-# a config file and a educational tool at the same 
-# time. 
+# an educational tool for learning the anatomy of a 
+# average Nix Config File, while also serving as 
+# a template that can be copied and tweaked for 
+# personal use. 
 
 # It is written up as reference guide on purpose, 
 # which is why there is so much commenting within 
 # the config file. 
 
 # Its goal is to help users who are completely 
-# NEW to NixOS and its philosophy.
+# NEW to NixOS. 
 
-# It does this by adding more visual separation
-# throughout the config file. 
+# It does this by enhancing the default layout that comes
+# with a fresh install of NixOS and rearranges the 
+# sequence order of the configurations options. 
 
-# It also provides explanations in narrative format
-# so users can better understand what is actually
-# happening within the configuration/formating.
+# To aid in readibility, we provide section headers 
+# to group similar batches of configurations while
+# also trying to apply a logical order and structure
+# to to the config file. 
 
-# This is NOT meant to replace official technical
-# documentation. Instead, this acts as a quick guided
+# We begin with low level system configurations 
+# (like the bootloader and networking), then declare 
+# things like the desktop environments (lxqt for simplicity)
+# and eventually make our way to software applications. 
+
+# With education being a goal with this document, 
+# we provide some explanations for configuration/formating
+# and terminology whenever warranted. 
+
+# NOTE: This is NOT meant to replace official technical
+# documentation. Instead, this acts as a quick guide
 # reference that can either be studied on its own
 # or actively used as a real NixOS config file
 # that you can tweak and expand over time.
@@ -51,7 +64,6 @@
 # - "..." allows additional values/modules to be passed in
 #
 # The "}" closes the input section.
-# The ":" signals the beginning of the actual configuration below.
 #
 # If you are new, there is a good chance you should not
 # modify this section yet.
@@ -76,6 +88,9 @@
       ./hardware-configuration.nix
     ];
 
+# Notice, how the "{" above the line of "imports = "
+# isn't closed out with "}" until the very end of this
+# config file. 
 
 ##################################################
 ##           SYSTEM CONFIGURATION               ##
@@ -88,18 +103,11 @@
 # configuration settings doesn't really matter, as long as 
 # the formatting is correct.  
 
-# To make it more logical to understand, the sections
-# are broken up into sub-sections. It starts with 
-# lower levels of the system, and works its way up to
-# software packages. 
-
 
 
 ##################################################
 ##               SYSTEM CORE                  ##
 ##################################################
-
-
 
 # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -233,6 +241,40 @@
   #
   # You can also search locally from the terminal:
   # nix search nixpkgs <package-name>
+
+  
+##################################################
+##  DESKTOP ENVIRONMENTS / WINDOW MANAGERS     ##
+##################################################
+
+# As mentioned earlier, the goal of this guide is 
+# to learn the Nix Config file. For the sake of 
+# simplicity, we are just sticking with LXQT. 
+
+# Enable the Login Manager to sign in. 
+services.xserver.displayManager.sddm.enable = true;
+
+# Enable the LXQt desktop environment
+services.xserver.desktopManager.lxqt.enable = true;
+
+# Enable XDG Desktop Portals.
+# Portals are used by desktop evironments and applications 
+# regardless of its origin or type (NixOS packages or Flatpak). 
+# To ensure a seemless experience for integration features
+# like file pickers, screenshots, screen sharing, and opening links
+# the following is needed. Note, this does assume application 
+# developers are keeping up with Portal development. If not, some
+# of these features can produce bugs or not function. 
+
+# Most of the time, this is handled by a Desktop Environment
+# entirely, but because we are using LXQT, we will share what
+# a configuration looks like here. 
+
+xdg.portal = {
+  enable = true;
+  lxqt.enable = true;
+  config.common.default = [ "lxqt" ];
+};
   
 ##################################################
 ##              SOFTWARE SOURCES               ##
@@ -245,105 +287,92 @@
 # Allow unfree packages from the Nix package repository.
 nixpkgs.config.allowUnfree = true;
 
+##################################################
+##         SOFTWARE SOURCE: FLATPAK            ##
+##################################################
+
 # For even more places to install software packages
-# from, you can enble Flatpaks, and direct flatpak
-# applications to be sourced from Flathub. 
+# from, you can enable Flatpaks, and direct Flatpak
+# applications to be sourced from Flathub.
 
 # Enable Flatpak support.
- services.flatpak.enable = true;
+services.flatpak.enable = true;
 
 # Add the Flathub repository.
-services.flatpak = {
-  # Enable Flatpak support.
-  enable = true;
+system.activationScripts.flathub.text = ''
+  ${pkgs.flatpak}/bin/flatpak remote-add --if-not-exists flathub \
+    https://dl.flathub.org/repo/flathub.flatpakrepo
+'';
 
-  # Add the Flathub repository.
-  remotes = [
-    {
-      name = "flathub";
-      location = "https://dl.flathub.org/repo/flathub.flatpakrepo";
-    }
-  ];
-};
-# Note: If you want to install flatpak software,
-# you can activate flatpaks, reboot, and open the 
-# terminal and add software using the following commands
-# as example. Or go to flathub.org and find commands
-# there. 
+# Note: If you want to install Flatpak software,
+# activate Flatpak support, reboot, and then use
+# commands like the following:
 
-# Example Commands to apply after activated without "#".
-# flatpak install flathub org.mozilla.firefox
 # flatpak install flathub com.spotify.Client
 
+# If you want to find software you can install, you can 
+# run flatpak search [ name of software ] or go to 
+# flathub.org and find the officila flatpak packaging
+# names and run the associated commands listed.
+
+# Note: If you want to install flatpaks via a GUI,
+# you can install a software center that pairs with
+# a Desktop Environment (eg Gnome or Plasma). We don't 
+# want this learning guide to be Desktop Environment 
+# specific, so for educational purpose, we refer you
+# to use the terminal. 
+
 ##################################################
-##  SPECIALIZED NIX SOFTWARE PACKAGES          ##
+##  SOFTWARE SOURCE: Nix Program Modules         ##
 ##################################################
 
-  # This section controls the software that is packaged
-  # as "program modules" specifically tuned for NixOS with special 
-  # configuration "options". By default, Firefox is included for
-  # convenience to provide better user experience. If you 
-  # want to see the scope of the program options for this, 
-  # you can go to etc/nixos/modules/programs/firefox.nix
+# This is not your typical NixOS software package section.
+# This section controls the software that is packaged
+# as "program modules". This means you can specifically 
+# tune software just for better NixOS configuration "options".
+# By default, Firefox is included for convenience to 
+# provide better user experience. 
 
-  # Installs Firefox using the built-in NixOS program option.
+# If you want to see the nature of the program options 
+# that are applied to the software, you can 
+# go to the following file path: 
+#    etc/nixos/modules/programs/firefox.nix
+
+# Installs Firefox using the built-in NixOS program option.
   programs.firefox.enable = true;
 
-  # Enable Vim using the built-in NixOS program option.
-  programs.vim.enable = true;
-  
-##################################################
-##           DESKTOP ENVIRONMENT               ##
-##################################################
-
-# Enable the LXQt desktop environment.
-# LXQt provides the graphical desktop session.
-
-services.xserver.displayManager.sddm.enable = true;
-services.xserver.desktopManager.lxqt.enable = true;
-
-# Enable XDG Desktop Portals.
-# Portals are used by Flatpak and modern desktop apps
-# for secure desktop integration features like file pickers,
-# screenshots, screen sharing, and opening links.
-#
-xdg.portal = {
-  enable = true;
-  lxqt.enable = true;
-  config.common.default = [ "lxqt" ];
-};
 
 ##################################################
 ##           SYSTEM-WIDE SOFTWARE              ##
 ##################################################
 
 # Software installed in this format makes it available 
-# to all users. Unlike "Specialized Nix Software Package"
-# these packages typically do not include deeper 
-# OS integration or additional configuration layers.
+# to ALL users (remember, the Users section gave you 
+# an option to setup software packages per user).
 
 # Note the formatting "with pkgs;" below. This simply
 # allows package names to be referenced without needing
 # to add the prefix "pkgs." for each software program. 
 #
-# In the next section, just list packages. To make it 
-# easier to manage your list, you can use categories. 
+# This makes it easier to manage your list. Do you want
+# better organize your list of packages? Add categories. 
 
-# Remember, some packages need to be named exactly 
-# as they are packaged. To ensure the correct package 
-# name, simple use one of the following methods: 
+# Just remember, packages need to be named exactly 
+# as they are packaged within NixOS. To ensure the correct 
+# package name, simple use one of the following methods: 
 
-# Search for packages online:
+# 1 Search for packages online:
 # https://search.nixos.org/packages
 #
-# Search locally from the terminal:
+# 2 Search locally from the terminal:
 # nix search nixpkgs <package-name> 
 
+# Add your nix software packages here. 
 environment.systemPackages = with pkgs; [
 
   # Text Editors
   featherpad
-  
+  vim
 
   # Utilities
   wget
@@ -354,16 +383,21 @@ environment.systemPackages = with pkgs; [
 
 ];
 
-  # In rare cases, you may want to "pin" software to a
-  # specific version due to bugs, compatibility issues,
-  # or newer features not yet available in your current channel.
-  #
-  # Instead of pulling software from your default "pkgs"
-  # collection, you can import a different nixpkgs snapshot.
-  #
-  # Example: Pin Firefox to a specific nixpkgs revision.
-  #
-  # let
+##################################################
+## BONUS:Pinning Software Versions and Channels   ##
+##################################################
+
+# Here is a optional bonus tip. In rare cases, 
+# you may want to "pin" software to a
+# specific version due to bugs, compatibility issues,
+# or newer features not yet available in your current channel.
+
+# Instead of pulling software from your default "pkgs"
+# collection, you can import a different nixpkgs snapshot.
+
+# Example: Pin Firefox to a specific nixpkgs revision.
+#
+ # let
   #   pinnedPkgs = import (builtins.fetchTarball {
   #     url = "https://github.com/NixOS/nixpkgs/archive/SPECIFIC-COMMIT.tar.gz";
   #   }) {};
@@ -395,27 +429,21 @@ environment.systemPackages = with pkgs; [
   # the rest of the operating system remains stable.
   
   
-#################################################
-##                 FLATPAK                     ##
-################################################## 
-  
-# Flatpak provides an additional software layer separated
-# from the core operating system. This can help reduce
-# dependency conflicts and keep desktop applications more isolated.
-#
-# This setup enables Flatpak support and adds Flathub
-# as a user-level software source.
-#
-# "User-level" means Flatpak applications are installed
-# only for your user account rather than system-wide
-# for every user on the machine.
+##################################################
+##              APPLYING CHANGES               ##
+##################################################
 
-# services.flatpak.enable = true;
+# After editing configuration.nix, apply your changes with:
+#
+# sudo nixos-rebuild switch
+#
+# If you want to test a configuration before making it the default
+# boot option, you can use:
+#
+# sudo nixos-rebuild test
 
-# system.activationScripts.addFlathubUserRepo.text = ''
-# ${pkgs.flatpak}/bin/flatpak remote-add --user --if-not-exists flathub \
-#    https://dl.flathub.org/repo/flathub.flatpakrepo
-# '';
+# The next section is more for NixOS historical purposes and 
+# can be left as is. 
 
 
 ##################################################
