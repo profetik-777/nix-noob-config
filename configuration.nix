@@ -9,18 +9,25 @@
 ##################################################
 
 # This NixOS config file is meant to serve as both
-# a tool and a reference guide. Its goal is to help
-# users who are completely NEW to NixOS and its
-# philosophy.
+# a config file and a educational tool at the same 
+# time. 
+
+# It is written up as reference guide on purpose, 
+# which is why there is so much commenting within 
+# the config file. 
+
+# Its goal is to help users who are completely 
+# NEW to NixOS and its philosophy.
 
 # It does this by adding more visual separation
-# throughout the config file. It also provides
-# explanations in narrative format so users can
-# slow down and better understand what is actually
-# happening behind the scenes.
+# throughout the config file. 
+
+# It also provides explanations in narrative format
+# so users can better understand what is actually
+# happening within the configuration/formating.
 
 # This is NOT meant to replace official technical
-# documentation. Instead, this acts as a guided
+# documentation. Instead, this acts as a quick guided
 # reference that can either be studied on its own
 # or actively used as a real NixOS config file
 # that you can tweak and expand over time.
@@ -259,7 +266,7 @@ services.flatpak = {
   ];
 };
 # Note: If you want to install flatpak software,
-# you can acticate flatpaks, reboot, and open the 
+# you can activate flatpaks, reboot, and open the 
 # terminal and add software using the following commands
 # as example. Or go to flathub.org and find commands
 # there. 
