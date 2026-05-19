@@ -1,60 +1,68 @@
-README
-Educational NixOS Configuration Guide
+# Annotated NixOS Config Guide  
+## Version 0.65
 
-This repository is an educational guide and learning project focused on understanding how to structure and manage a modern NixOS system configuration.
+This project is an educational reference guide designed to help new users understand the structure and logic behind a typical NixOS configuration file.
 
-The examples in this repository currently use LXQt as the primary desktop environment because it provides a lightweight and relatively easy-to-understand starting point for experimentation and learning.
+Instead of presenting a minimal config with little explanation, this guide expands on the default `configuration.nix` layout by reorganizing sections, adding comments, and explaining terminology along the way.
 
-However, the concepts demonstrated here are not limited to LXQt. Future iterations may explore other desktop environments such as:
+The goal is to make the file easier to read, study, and modify over time.
 
-GNOME
-KDE Plasma
-Wayfire
-Hyprland
-Miriway
-Other Wayland or X11-based environments
+---
 
-The goal is to help users understand:
+# What This Guide Covers
 
-How NixOS config is laid out and organized 
-The concept of "modules" and the nuance of how that gets applied
-How desktop environments are enabled and configured
-How portals and display managers interact
-How to organize reusable configurations over time
-Areas for Exploration and Improvement
+- Core system configuration
+- Bootloader and networking basics
+- Desktop environment setup
+- User management
+- Software package declarations
+- Flatpak integration
+- NixOS formatting and naming conventions
+- General terminology used throughout the Nix ecosystem
 
-One of the major educational goals of this project is understanding the ripple effects that occur when introducing or changing desktop environments.
+Configurations are grouped into clearly labeled sections to improve readability and help users understand how different parts of the system relate to each other.
 
-For example, enabling a desktop environment may also impact:
+The file is intentionally verbose and heavily commented so it can function as both:
 
-Wayland portal configuration
-XDG desktop integration
-Display manager behavior
-Session startup logic
-Authentication agents
+1. A learning resource
+2. A real working template you can customize
 
+---
 
-Part of the learning process is recognizing that desktop environments are not isolated components. They often introduce supporting services, dependencies, defaults, and assumptions that affect other parts of the system configuration.
+# Intended Audience
 
-This repository aims to document and explain those relationships as clearly as possible.
+This guide is primarily aimed at:
 
-Naming Conventions and Terminology
+- New NixOS users
+- Linux users transitioning into declarative systems
+- People trying to better understand how NixOS organizes configuration
 
-This guide also attempts to explain common NixOS terminology and naming conventions to reduce confusion for newer users.
+---
 
-Examples
-Why some services appear even when you did not explicitly install them
-How modules, packages, services, and options relate to each other
+# Important Notes
 
-The intention is not only to provide working configurations, but also to help users build a mental model of how the Linux desktop stack fits together.
+This is **not** a replacement for official NixOS documentation.
 
-Important Notes
-Configurations are provided as learning examples.
-Some settings may be opinionated or experimental.
-Always review configurations before deploying them on production systems.
-Desktop environment examples are interchangeable learning references, not permanent architectural decisions.
-Philosophy
+Instead, it acts as a practical companion guide that explains concepts in a more approachable and structured way while remaining usable as an actual system configuration.
 
-The purpose of this repository is not only to build a working system, but to better understand why the system works.
+Additional documentation can be found through:
 
-Learning NixOS is as much about understanding relationships between services, modules, packages, sessions, portals, and system behavior as it is about achieving a final configuration.
+- `man configuration.nix`
+- `nixos-help`
+- The official [NixOS Manual](https://nixos.org/manual/nixos/stable/)
+
+---
+
+# Future Improvements
+
+One area this project continues to explore is how desktop environments introduce additional dependencies and configuration ripple effects throughout the system.
+
+Examples include:
+
+- XDG desktop portals
+- Wayland compatibility layers
+- Display managers
+- Session handling
+- Audio and notification integration
+
+The current guide uses LXQt as a lightweight example environment, but the concepts are intended to remain useful even when switching to environments like GNOME or Plasma later on.
