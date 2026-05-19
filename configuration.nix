@@ -49,6 +49,9 @@
 # man page and in the NixOS manual
 # (accessible by running 'nixos-help').
 
+# Tip: If you plan on using this file, make sure
+# you change the username from the example in the 
+# file to yours! 
 
 ##################################################
 ##               CONFIG CONTEXT                ##
