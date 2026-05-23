@@ -231,9 +231,9 @@
   # Simply uncomment make your software list 
   # beneath.
   
-  users.users.PutYourUserNameHere = {profetik777
+  users.users.PutYourUserNameHere = {username
     isNormalUser = true;
-    description = "profetik777";
+    description = "username";
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
     #  thunderbird
