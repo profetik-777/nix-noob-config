@@ -181,7 +181,7 @@
   networking.networkmanager.enable = true;
 
  # Enable tailscale
-  networking.networkmanager.enable = true; 
+  services.tailscale.enable = true; 
 
   # Enable network manager applet
   programs.nm-applet.enable = true;
@@ -231,9 +231,9 @@
   # Simply uncomment make your software list 
   # beneath.
   
-  users.users.PutYourUserNameHere = {username
+  users.users.Put-Your-Username-Here = {
     isNormalUser = true;
-    description = "username";
+    description = "And-Also-Here-Username";
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
     #  thunderbird
