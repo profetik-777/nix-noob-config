@@ -180,6 +180,9 @@
  # Enable networking
   networking.networkmanager.enable = true;
 
+ # Enable tailscale
+  networking.networkmanager.enable = true; 
+
   # Enable network manager applet
   programs.nm-applet.enable = true;
 
@@ -228,9 +231,9 @@
   # Simply uncomment make your software list 
   # beneath.
   
-  users.users.PutYourUserNameHere = {
+  users.users.PutYourUserNameHere = {profetik777
     isNormalUser = true;
-    description = "UrUserName";
+    description = "profetik777";
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
     #  thunderbird
@@ -301,15 +304,13 @@ nixpkgs.config.allowUnfree = true;
 # Enable Flatpak support.
 services.flatpak.enable = true;
 
-# Add the Flathub repository.
-system.activationScripts.flathub.text = ''
-  ${pkgs.flatpak}/bin/flatpak remote-add --if-not-exists flathub \
-    https://dl.flathub.org/repo/flathub.flatpakrepo
-'';
-
 # Note: If you want to install Flatpak software,
-# activate Flatpak support, reboot, and then use
-# commands like the following:
+# activate Flatpak support with the comamnd above,
+#, reboot, and then use
+# the following command to enable it as a repo. 
+# This will allow Gnome Software to "see" the
+# flathub repo within the Gnome Software Center.  
+
 
 # flatpak install flathub com.spotify.Client
 
@@ -380,7 +381,7 @@ environment.systemPackages = with pkgs; [
   # Utilities
   wget
   git
-
+  gnome-software
   # Media
   vlc
 
