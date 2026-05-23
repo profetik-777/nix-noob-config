@@ -7,6 +7,8 @@ Instead of presenting a minimal config with little explanation, this guide expan
 
 The goal is to make the file easier to read, study, and modify over time.
 
+Note: remember to replace the username with your own before applying ;) 
+
 ---
 
 # What This Guide Covers
