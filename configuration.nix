@@ -161,6 +161,11 @@
   #   enableSSHSupport = true;
   # };
 
+# xscreensaver had an issue where it would fail
+# and this setting helps you get back into your session
+
+security.pam.services.xscreensaver.enable = true;
+
 # Enable XDG Desktop Portals.
 # Used by Flatpak and modern desktop/Wayland apps for
 # secure desktop integration features.
